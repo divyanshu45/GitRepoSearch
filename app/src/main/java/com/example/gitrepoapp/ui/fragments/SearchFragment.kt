@@ -1,12 +1,7 @@
 package com.example.gitrepoapp.ui.fragments
 
-import android.graphics.Color
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -17,7 +12,6 @@ import com.example.gitrepoapp.R
 import com.example.gitrepoapp.adapter.RepoAdapter
 import com.example.gitrepoapp.adapter.RepoLoadStateAdapter
 import com.example.gitrepoapp.databinding.FragmentSearchBinding
-import com.example.gitrepoapp.models.Languages
 import com.example.gitrepoapp.ui.RepoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -81,37 +75,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     emptyTv.isVisible = false
                 }
             }
-        }
-
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-
-        inflater.inflate(R.menu.navigation_menu, menu)
-
-        val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView
-        val searchAutoComplete: androidx.appcompat.widget.SearchView.SearchAutoComplete = searchView.findViewById(R.id.search_src_text)
-
-        searchAutoComplete.setTextColor(Color.WHITE)
-        searchAutoComplete.setDropDownBackgroundResource(R.color.colorPrimaryDark)
-
-        val newsAdapter: ArrayAdapter<String> = ArrayAdapter(
-            this.requireContext(),
-            R.layout.dropdown_item,
-            Languages.data
-        )
-        searchAutoComplete.setAdapter(newsAdapter)
-
-        searchAutoComplete.onItemClickListener = AdapterView.OnItemClickListener { adapterView, _, itemIndex, _ ->
-            val queryString = adapterView.getItemAtPosition(itemIndex) as String
-            searchAutoComplete.setText(String.format(getString(R.string.search_query), queryString))
-            binding.recycler.scrollToPosition(0)
-            val languageQuery = String.format(getString(R.string.query), queryString)
-            viewModel.searchRepos(languageQuery)
-            searchView.clearFocus()
         }
     }
 
